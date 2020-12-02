@@ -3,6 +3,7 @@ package util
 import (
 	"bufio"
 	"os"
+	"strconv"
 )
 
 // Reverse a string
@@ -20,6 +21,18 @@ func ChannelToSlice(input <-chan string) []string {
 
 	for input := range input {
 		output = append(output, input)
+	}
+
+	return output
+}
+
+// ChannelToSlice returns an array insead of a channel
+func StringChannelToIntSlice(input <-chan string) []int {
+	var output []int
+
+	for input := range input {
+		value, _ := strconv.Atoi(input)
+		output = append(output, value)
 	}
 
 	return output
