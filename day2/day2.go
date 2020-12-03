@@ -31,7 +31,6 @@ func validatePasswords(input []string) (part1, part2 int) {
 			part2++
 		}
 	}
-
 	return
 }
 
