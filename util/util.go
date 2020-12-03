@@ -3,8 +3,25 @@ package util
 import (
 	"bufio"
 	"os"
+	"regexp"
 	"strconv"
 )
+
+// RegexMap returns a map of regex labels to values
+func RegexMap(regex, input string) (m map[string]string) {
+	r := regexp.MustCompile(regex)
+	match := r.FindStringSubmatch(input)
+
+	m = make(map[string]string)
+
+	for i, name := range r.SubexpNames() {
+		if i > 0 && i <= len(match) {
+			m[name] = match[i]
+		}
+	}
+
+	return
+}
 
 // Reverse a string
 func Reverse(s string) string {
@@ -15,7 +32,7 @@ func Reverse(s string) string {
 	return string(runes)
 }
 
-// ChannelToSlice returns an array insead of a channel
+// ChannelToSlice returns an slice insead of a channel
 func ChannelToSlice(input <-chan string) []string {
 	var output []string
 
@@ -26,7 +43,7 @@ func ChannelToSlice(input <-chan string) []string {
 	return output
 }
 
-// ChannelToSlice returns an array insead of a channel
+// StringChannelToIntSlice returns a int slice insead of a channel
 func StringChannelToIntSlice(input <-chan string) []int {
 	var output []int
 
