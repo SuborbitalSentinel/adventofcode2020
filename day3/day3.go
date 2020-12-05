@@ -5,7 +5,7 @@ import (
 	"fmt"
 )
 
-// Run day two of advent
+// Run day three of advent
 func Run(input <-chan string) {
 	maze := util.ChannelToSlice(input)
 
