@@ -17,7 +17,6 @@ func parsePassportList(input []string) (passports []passport) {
 			passports = append(passports, currentPassport)
 			currentPassport = newPassport()
 		} else {
-			// split the line by space and append each part to the Fields slice
 			fields := strings.Split(line, " ")
 			for _, field := range fields {
 				pair := strings.Split(field, ":")
