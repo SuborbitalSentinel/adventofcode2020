@@ -35,7 +35,7 @@ func Run(input <-chan string) {
 	}
 
 	fmt.Println("Day6 -- Part1: ", totalAnswers)
-	fmt.Println("Day6 -- Part1: ", totalUnanamousAnswers)
+	fmt.Println("Day6 -- Part2: ", totalUnanamousAnswers)
 }
 
 type group struct {
