@@ -6,7 +6,7 @@ import (
 	"sort"
 )
 
-// Run day four of advent
+// Run day five of advent
 func Run(input <-chan string) {
 	var planeRows [128]int
 	for i := range planeRows {
@@ -15,8 +15,8 @@ func Run(input <-chan string) {
 	planeCols := [8]int{0, 1, 2, 3, 4, 5, 6, 7}
 	boardingPasses := util.ChannelToSlice(input)
 
-	fmt.Println("Day4 -- Part1: ", maxSeatID(planeRows, planeCols, boardingPasses))
-	fmt.Println("Day4 -- Part2: ", findMissingSeatID(planeRows, planeCols, boardingPasses))
+	fmt.Println("Day5 -- Part1: ", maxSeatID(planeRows, planeCols, boardingPasses))
+	fmt.Println("Day5 -- Part2: ", findMissingSeatID(planeRows, planeCols, boardingPasses))
 }
 
 func findMissingSeatID(planeRows [128]int, planeCols [8]int, boardingPasses []string) int {

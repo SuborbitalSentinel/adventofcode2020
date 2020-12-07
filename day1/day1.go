@@ -21,7 +21,6 @@ func part1(input []int) int {
 			}
 		}
 	}
-
 	return -1
 }
 
