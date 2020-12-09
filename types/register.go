@@ -7,9 +7,10 @@ import (
 
 // Register represents the contents of a memory location
 type Register struct {
-	Command  string
-	Executed bool
-	Mutated  bool
+	Command            string
+	Executed           bool
+	CurrentlyMutated   bool
+	HasEverBeenMutated bool
 }
 
 // Instruction returns the instruction of the command
@@ -54,7 +55,8 @@ func (r *Register) Revert() (pcOffset, accumulator int) {
 
 // Mutate will flip nop and jmp instructions
 func (r *Register) Mutate() {
-	r.Mutated = true
+	r.HasEverBeenMutated = true
+	r.CurrentlyMutated = !r.CurrentlyMutated
 	c := util.RegexMap(`(?P<Instruction>\w+) (?P<Direction>(\+|-))(?P<Count>\d+)$`, r.Command)
 	switch c["Instruction"] {
 	case "jmp":

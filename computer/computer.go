@@ -2,14 +2,16 @@ package computer
 
 import (
 	"adventOfCode2020/types"
+	"fmt"
 )
 
 // Computer represents a type that can run programs
 type Computer struct {
-	Accumulator    int
-	ProgramCounter int
-	Memory         []types.Register
-	CallStack      types.RegisterStack
+	Accumulator            int
+	ProgramCounter         int
+	Memory                 []types.Register
+	CallStack              types.RegisterStack
+	HasAttemptedCorrection bool
 }
 
 // New returns a new computer type
@@ -20,9 +22,20 @@ func New(instructionSet []string) *Computer {
 		registers = append(registers, register)
 	}
 	return &Computer{
-		Accumulator:    0,
-		ProgramCounter: 0,
-		Memory:         registers,
+		Accumulator:            0,
+		ProgramCounter:         0,
+		Memory:                 registers,
+		HasAttemptedCorrection: false,
+	}
+}
+
+// CleanMemory scans the computer memory and calls Mutate on any memory location that has been mutated
+func (c *Computer) CleanMemory() {
+	c.HasAttemptedCorrection = false
+	for _, reg := range c.Memory {
+		if reg.CurrentlyMutated {
+			reg.Mutate()
+		}
 	}
 }
 
@@ -54,6 +67,37 @@ func (c *Computer) ExecuteProgram() int {
 			break
 		}
 		c.ExecuteCurrentInstruction()
+	}
+	return c.Accumulator
+}
+
+// AttemptCorrection walks back the callstack until it finds a jmp, mutates it, then exits
+func (c *Computer) AttemptCorrection() {
+	c.HasAttemptedCorrection = true
+	for true {
+		c.RevertLastInstruction()
+		if !c.CurrentInstruction().HasEverBeenMutated && (c.CurrentInstruction().Instruction() == "jmp" || c.CurrentInstruction().Instruction() == "nop") {
+			c.CurrentInstruction().Mutate()
+			break
+		}
+	}
+}
+
+// ExecuteSelfCorrectingProgram runs the program stored in the computer but tries to fix the infinite loop
+func (c *Computer) ExecuteSelfCorrectingProgram() int {
+	for true {
+		if c.ProgramCounter > len(c.Memory)-1 {
+			break
+		}
+		if c.CurrentInstruction().Executed {
+			if c.HasAttemptedCorrection {
+				c.CleanMemory()
+			}
+			c.AttemptCorrection()
+		}
+		c.ExecuteCurrentInstruction()
+		fmt.Println("Program Counter:", c.ProgramCounter)
+		fmt.Println("Call Stack:", c.CallStack.Dump())
 	}
 	return c.Accumulator
 }

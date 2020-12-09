@@ -8,7 +8,7 @@ import (
 
 // Run day seven of advent
 func Run(input <-chan string) {
-	computer := computer.New(util.ChannelToSlice(input))
-	fmt.Println("Day8 -- Part1: ", computer.ExecuteProgram())
-	//fmt.Println("Day8 -- Part2: ", 2)
+	instructions := util.ChannelToSlice(input)
+	//	fmt.Println("Day8 -- Part1: ", computer.New(instructions).ExecuteProgram())
+	fmt.Println("Day8 -- Part2: ", computer.New(instructions).ExecuteSelfCorrectingProgram())
 }

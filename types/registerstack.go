@@ -5,6 +5,19 @@ type RegisterStack struct {
 	stack []*Register
 }
 
+// Dump returns all the current comamnd strings in the stack
+func (s *RegisterStack) Dump() (out []string) {
+	for _, reg := range s.stack {
+		out = append(out, reg.Command)
+	}
+	return
+}
+
+// Peek returns a pointer to the top item in the stack, but does not remove it
+func (s *RegisterStack) Peek() *Register {
+	return s.stack[0]
+}
+
 // Push adds a register to the top of the stack
 func (s *RegisterStack) Push(value *Register) {
 	s.stack = append([]*Register{value}, s.stack...)

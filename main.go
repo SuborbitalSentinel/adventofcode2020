@@ -13,5 +13,5 @@ func main() {
 	//day5.Run(util.Readlines("day5/input"))
 	//day6.Run(util.Readlines("day6/input"))
 	//day7.Run(util.Readlines("day7/input"))
-	day8.Run(util.Readlines("day8/test"))
+	day8.Run(util.Readlines("day8/input"))
 }
