@@ -2,7 +2,6 @@ package computer
 
 import (
 	"adventOfCode2020/types"
-	"fmt"
 )
 
 // Computer represents a type that can run programs
@@ -18,7 +17,7 @@ type Computer struct {
 func New(instructionSet []string) *Computer {
 	var registers []types.Register
 	for _, instruction := range instructionSet {
-		register := types.Register{Command: instruction, Executed: false}
+		register := types.Register{Command: instruction, Executed: false, CurrentlyMutated: false, HasEverBeenMutated: false}
 		registers = append(registers, register)
 	}
 	return &Computer{
@@ -96,8 +95,6 @@ func (c *Computer) ExecuteSelfCorrectingProgram() int {
 			c.AttemptCorrection()
 		}
 		c.ExecuteCurrentInstruction()
-		fmt.Println("Program Counter:", c.ProgramCounter)
-		fmt.Println("Call Stack:", c.CallStack.Dump())
 	}
 	return c.Accumulator
 }
