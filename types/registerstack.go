@@ -5,6 +5,16 @@ type RegisterStack struct {
 	stack []*Register
 }
 
+// Count returns the number of remaining registers in the stack
+func (s *RegisterStack) Count() int {
+	return len(s.stack)
+}
+
+// Clear sets the underlying stack to nil
+func (s *RegisterStack) Clear() {
+	s = nil
+}
+
 // Dump returns all the current comamnd strings in the stack
 func (s *RegisterStack) Dump() (out []string) {
 	for _, reg := range s.stack {

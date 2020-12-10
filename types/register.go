@@ -7,10 +7,15 @@ import (
 
 // Register represents the contents of a memory location
 type Register struct {
-	Command            string
-	Executed           bool
-	CurrentlyMutated   bool
-	HasEverBeenMutated bool
+	Command         string
+	Executed        bool
+	Mutated         bool
+	TriedCorrection bool
+}
+
+// IsPossiblyCorrupt returns true if this register contains a command that should be mutated
+func (r *Register) IsPossiblyCorrupt() bool {
+	return !r.TriedCorrection && !r.Mutated && (r.Instruction() == "jmp" || r.Instruction() == "nop")
 }
 
 // Instruction returns the instruction of the command
@@ -55,8 +60,8 @@ func (r *Register) Revert() (pcOffset, accumulator int) {
 
 // Mutate will flip nop and jmp instructions
 func (r *Register) Mutate() {
-	r.HasEverBeenMutated = true
-	r.CurrentlyMutated = !r.CurrentlyMutated
+	r.TriedCorrection = true
+	r.Mutated = !r.Mutated
 	c := util.RegexMap(`(?P<Instruction>\w+) (?P<Direction>(\+|-))(?P<Count>\d+)$`, r.Command)
 	switch c["Instruction"] {
 	case "jmp":
