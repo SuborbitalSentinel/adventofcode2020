@@ -26,19 +26,13 @@ func New(instructionSet []string) *Computer {
 	}
 }
 
-// Reset resets everything on the computer except for AttemptedCorrection
+// Reset resets everything on the computer except for AttemptedCorrection and Mutated
 func (c *Computer) Reset() {
 	c.ProgramCounter = 0
 	c.Accumulator = 0
 	c.CallStack.Clear()
 	for i := range c.Memory {
 		c.Memory[i].Executed = false
-	}
-}
-
-// RevertAllMutations loops through the computers memory reverting any mutation that has been done
-func (c *Computer) RevertAllMutations() {
-	for i := range c.Memory {
 		if c.Memory[i].Mutated {
 			c.Memory[i].Mutate()
 		}
@@ -98,7 +92,6 @@ func (c *Computer) ExecuteSelfCorrectingProgram() int {
 	for c.IsProgramCounterInRange() {
 		if c.CurrentInstruction().Executed {
 			reg := c.FindPossiblyCorruptRegister()
-			c.RevertAllMutations()
 			c.Reset()
 			reg.Mutate()
 		}
