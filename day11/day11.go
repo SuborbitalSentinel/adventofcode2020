@@ -22,8 +22,8 @@ func Run(input <-chan string) {
 	planeSeats := util.ChannelToSlice(input)
 	planeSeats = padInput(planeSeats)
 
-	fmt.Println("Day10 -- Part1: ", part1(planeSeats))
-	//fmt.Println("Day10 -- Part2: ", part2(jolts))
+	//fmt.Println("Day10 -- Part1: ", part1(planeSeats))
+	fmt.Println("Day10 -- Part2: ", part2(planeSeats))
 }
 
 func part1(input []string) int {
@@ -31,5 +31,16 @@ func part1(input []string) int {
 	for plane.NextSeatingArrangement() > 0 {
 		plane.Print()
 	}
+	return plane.CountOccupiedSeats()
+}
+
+func part2(input []string) int {
+	plane := types.NewPlane(input)
+	timesRun := 0
+	for plane.NextSeatingArrangement() > 0 {
+		timesRun++
+		plane.Print()
+	}
+	fmt.Println("NumberOfRuns:", timesRun)
 	return plane.CountOccupiedSeats()
 }
