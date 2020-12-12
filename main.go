@@ -1,7 +1,7 @@
 package main
 
 import (
-	"adventOfCode2020/day9"
+	"adventOfCode2020/day10"
 	"adventOfCode2020/util"
 )
 
@@ -14,5 +14,6 @@ func main() {
 	//day6.Run(util.Readlines("day6/input"))
 	//day7.Run(util.Readlines("day7/input"))
 	//day8.Run(util.Readlines("day8/input"))
-	day9.Run(util.Readlines("day9/input"))
+	//day9.Run(util.Readlines("day9/input"))
+	day10.Run(util.Readlines("day10/input"))
 }
