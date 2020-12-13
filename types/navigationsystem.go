@@ -1,5 +1,7 @@
 package types
 
+import "adventOfCode2020/util"
+
 // NavigationSystem represents the boats navigation system
 type NavigationSystem struct {
 	ShipPosition Position
@@ -28,7 +30,7 @@ func NewNavigationSystem() *NavigationSystem {
 
 // ManhattenDistance tells you how far the ship has traveled from it's starting position
 func (ns *NavigationSystem) ManhattenDistance() int {
-	return abs(ns.ShipPosition.X) + abs(ns.ShipPosition.Y)
+	return util.Abs(ns.ShipPosition.X) + util.Abs(ns.ShipPosition.Y)
 }
 
 func (ns *NavigationSystem) currentDirection() Direction {
@@ -65,12 +67,4 @@ func (ns *NavigationSystem) move(d Direction, distance int) {
 	case West:
 		ns.ShipPosition.X -= distance
 	}
-}
-
-// Go REALLY doesn't have a built in abs function for integers....WHAII
-func abs(input int) int {
-	if input < 0 {
-		return -input
-	}
-	return input
 }

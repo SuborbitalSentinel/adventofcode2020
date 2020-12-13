@@ -101,3 +101,11 @@ func Readlines(path string) <-chan string {
 
 	return chnl
 }
+
+// Abs Go REALLY doesn't have a built in abs function for integers....WHAII
+func Abs(input int) int {
+	if input < 0 {
+		return -input
+	}
+	return input
+}
