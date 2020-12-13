@@ -12,11 +12,11 @@ type Plane struct {
 
 // NewPlane creates a new seat layout
 func NewPlane(input []string) *Plane {
-	layout := Plane{}
+	plane := Plane{}
 	for _, row := range input {
-		layout.Layout = append(layout.Layout, []rune(row))
+		plane.Layout = append(plane.Layout, []rune(row))
 	}
-	return &layout
+	return &plane
 }
 
 // Print prints out the planes layout
@@ -43,7 +43,6 @@ func (p *Plane) NextSeatingArrangement() (changedSeats int) {
 		newLayout = append(newLayout, newRow)
 	}
 	p.Layout = newLayout
-	fmt.Println("Changed Seats:", changedSeats)
 	return
 }
 
@@ -78,18 +77,6 @@ func (p *Plane) modifyState(x, y int) (bool, rune) {
 	//}
 }
 
-func (p *Plane) isEmptySeat(x, y int) bool {
-	return p.Layout[y][x] == 'L'
-}
-
-func (p *Plane) isOccupiedSeat(x, y int) bool {
-	return p.Layout[y][x] == '#'
-}
-
-func (p *Plane) isFloor(x, y int) bool {
-	return p.Layout[y][x] == '.'
-}
-
 func (p *Plane) shouldBecomeOccupiedLos(x, y int) bool {
 	for i := -1; i <= 1; i++ {
 		for j := -1; j <= 1; j++ {
@@ -112,9 +99,8 @@ func (p *Plane) shouldBecomeEmptyLos(x, y int) bool {
 			if i == 0 && j == 0 {
 				continue
 			}
-
 			found, seat := p.findSeat(x, j, y, i)
-			if found && seat == 'L' {
+			if found && seat == '#' {
 				numberOfEmptySeats++
 			}
 		}
@@ -134,13 +120,25 @@ func (p *Plane) findSeat(x, xDir, y, yDir int) (bool, rune) {
 	return false, rune(0)
 }
 
+func (p *Plane) isEmptySeat(x, y int) bool {
+	return p.Layout[y][x] == 'L'
+}
+
+func (p *Plane) isOccupiedSeat(x, y int) bool {
+	return p.Layout[y][x] == '#'
+}
+
+func (p *Plane) isFloor(x, y int) bool {
+	return p.Layout[y][x] == '.'
+}
+
 func (p *Plane) shouldBecomeOccupied(x, y int) bool {
 	for i := -1; i <= 1; i++ {
 		for j := -1; j <= 1; j++ {
 			if i == 0 && j == 0 {
 				continue
 			}
-			if !p.isFloor(x+j, y+i) && !p.isEmptySeat(x+j, y+i) {
+			if !p.isFloor(x+j, y+i) && p.isOccupiedSeat(x+j, y+i) {
 				return false
 			}
 		}
@@ -155,7 +153,7 @@ func (p *Plane) shouldBecomeEmpty(x, y int) bool {
 			if i == 0 && j == 0 {
 				continue
 			}
-			if !p.isFloor(x+j, y+i) && !p.isEmptySeat(x+j, y+i) {
+			if !p.isFloor(x+j, y+i) && p.isOccupiedSeat(x+j, y+i) {
 				numberOfEmptySeats++
 			}
 		}
