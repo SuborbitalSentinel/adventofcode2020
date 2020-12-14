@@ -79,6 +79,31 @@ func Readwords(path string) <-chan string {
 	return chnl
 }
 
+// Readints returns a channel containing the content of the file with int type
+func Readints(path string) <-chan int {
+	fobj, err := os.Open(path)
+	if err != nil {
+		return nil
+	}
+
+	scanner := bufio.NewScanner(fobj)
+	if err := scanner.Err(); err != nil {
+		return nil
+	}
+
+	chnl := make(chan int)
+	go func() {
+		for scanner.Scan() {
+			x, _ := strconv.Atoi(scanner.Text())
+			chnl <- x
+		}
+		close(chnl)
+	}()
+
+	return chnl
+
+}
+
 // Readlines returns a channel containing the content of the file
 func Readlines(path string) <-chan string {
 	fobj, err := os.Open(path)
