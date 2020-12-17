@@ -7,6 +7,18 @@ import (
 	"strconv"
 )
 
+// Params returns a map of regex labels to values
+func Params(regex *regexp.Regexp, input string) (m map[string]string) {
+	match := regex.FindStringSubmatch(input)
+	m = make(map[string]string)
+	for i, name := range regex.SubexpNames() {
+		if i > 0 && i <= len(match) {
+			m[name] = match[i]
+		}
+	}
+	return
+}
+
 // RegexMap returns a map of regex labels to values
 func RegexMap(regex, input string) (m map[string]string) {
 	r := regexp.MustCompile(regex)
